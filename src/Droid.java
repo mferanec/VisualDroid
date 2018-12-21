@@ -80,7 +80,7 @@ public class Droid {
                 advancedDroid.awaitingCommand();
                 advancedDroid.command(user_input.next());
 
-                if (commandNo == 1) {
+            /*    if (commandNo == 1) {
                     System.out.println("Please select hover height:");
                     advancedDroid.hover(user_input.nextInt());
                     hoverBoolean = true;
@@ -97,7 +97,28 @@ public class Droid {
                     advancedDroid.recharge();
                 } else if (commandNo == 4 && hoverBoolean == true) {
                     System.out.println("You need to land to recharge");
+                } */
+
+                switch(commandNo) {
+
+                    case 1:
+                        System.out.println("Please select hover height:");
+                        advancedDroid.hover(user_input.nextInt());
+                        hoverBoolean = true;
+                    break;
+                    case 2:
+                        if (hoverBoolean == true) {
+                            advancedDroid.location();
+                            System.out.println("Select X + Y coordinates separated by space:");
+                            advancedDroid.move(user_input.nextInt(),user_input.nextInt());
+                        } else {
+                            System.out.println("You need to hover to move!");
+                        }
+                    break;
+
+
                 }
+
             }
         }
     }
