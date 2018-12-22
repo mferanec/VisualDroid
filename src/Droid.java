@@ -6,7 +6,8 @@ public class Droid {
     static int commandNo;
     int positionX = 0;
     int positionY = 0;
-    Boolean winCondition = false;
+    static Boolean winCondition = false;
+    static Boolean hitMine = false;
 
     public Droid(int batteryLevel) {
         battery = batteryLevel;
@@ -54,24 +55,21 @@ public class Droid {
     }
 
     public void move(int moveX, int moveY) {
-            if (moveX > 2 || moveX < -2 || moveY > 2 || moveY < -2) {
-                System.out.print("You can only move maximum 2 by 2 spaces at a time.");
+        if (moveX > 2 || moveX < -2 || moveY > 2 || moveY < -2) {
+            System.out.println("You can only move maximum 2 by 2 spaces at a time.");
+        } else {
+            if (positionX + moveX < 0 || positionY + moveY < 0) {
+                System.out.println("Negative axis is out of bounds.");
+            } else if (positionX + moveX > 10 || positionY + moveY > 10) {
+                System.out.println("Those coordinates are out of bounds.");
             } else {
-                if (positionX + moveX < 0 || positionY + moveY < 0) {
-                    System.out.print("Negative axis is out of bounds");
-                } else if (positionX + moveX >= 10 || positionY + moveY >= 10) {
-                    System.out.print("Those coordinates are out of bounds");
-                } else {
-                    positionX = positionX + moveX;
-                    positionY = positionY + moveY;
-                    battery = battery - (moveX * moveY * 2);
-                }
+                positionX = positionX + moveX;
+                positionY = positionY + moveY;
+                if (moveX == 0) { moveX = 1; }
+                if (moveY == 0) { moveY = 1; }
+                battery = battery - (moveX * moveY * 2);
+                if (positionX == 10 && positionY == 10) { winCondition = true; }
             }
-    }
-
-    public void win() {
-        if (positionX == 10 && positionY == 10) {
-            winCondition = true;
         }
     }
 
@@ -82,46 +80,54 @@ public class Droid {
 
     public static void main(String[] args) {
 
-            Boolean hoverBoolean = false;
-            Droid advancedDroid = new Droid(100);
-            Scanner user_input = new Scanner(System.in);
+        Boolean hoverBoolean = false;
+        Droid advancedDroid = new Droid(100);
+        Scanner user_input = new Scanner(System.in);
 
-            advancedDroid.startup();
+        advancedDroid.startup();
 
-            while (battery > 0) {
-                advancedDroid.awaitingCommand();
-                advancedDroid.command(user_input.next());
+        while (battery > 0 && winCondition == false && hitMine == false) {
+            advancedDroid.awaitingCommand();
+            advancedDroid.command(user_input.next());
 
-                switch(commandNo) {
-                    case 1:
-                        System.out.println("Please select hover height:");
-                        advancedDroid.hover(user_input.nextInt());
-                        hoverBoolean = true;
+            switch (commandNo) {
+                case 1:
+                    System.out.println("Please select hover height:");
+                    advancedDroid.hover(user_input.nextInt());
+                    hoverBoolean = true;
                     break;
-                    case 2:
-                        if (hoverBoolean == true) {
-                            advancedDroid.location();
-                            System.out.println("Select X + Y coordinates separated by space:");
-                            advancedDroid.move(user_input.nextInt(),user_input.nextInt());
-                        } else {
-                            System.out.println("You need to hover to move!");
-                        }
+                case 2:
+                    if (hoverBoolean == true) {
+                        advancedDroid.location();
+                        System.out.println("Select X + Y coordinates separated by space:");
+                        advancedDroid.move(user_input.nextInt(), user_input.nextInt());
+                    } else {
+                        System.out.println("You need to hover to move!");
+                    }
                     break;
-                    case 3:
-                        System.out.println("Landing...");
-                        hoverBoolean = false;
+                case 3:
+                    System.out.println("Landing...");
+                    hoverBoolean = false;
                     break;
-                    case 4:
-                        if (hoverBoolean == false) {
+                case 4:
+                    if (hoverBoolean == false) {
                         advancedDroid.recharge();
                     } else {
                         System.out.println("You need to land to recharge.");
                     }
-                }
             }
+        }
+        if (battery <= 0) {
             System.out.println("You ran out of battery!");
             System.out.println("GAME OVER");
+        } else if (hitMine == true) {
+            System.out.println("You hit a mine!");
+            System.out.println("GAME OVER");
+        } else {
+            advancedDroid.location();
+            System.out.println("Congratulations! You won!");
         }
     }
+}
 
 
