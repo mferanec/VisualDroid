@@ -78,6 +78,26 @@ public class Droid {
         battery = 100;
     }
 
+    public void mines() {
+        Boolean mineHitX = false;
+        Boolean mineHitY = false;
+        int[] minesArray = new int[] {1,1,2,2,3,3,4,4};
+    /*    for(int i = 0; i < minesArray.length; i++) {
+            minesArray[i] = (int)(Math.random()*9)+1;
+            System.out.print(minesArray[i]);
+        } */
+        for (int i = 0; i < minesArray.length && (mineHitX == false || mineHitY == false); i+=2) {
+            mineHitX = false;
+            mineHitY = false;
+            if (minesArray[i]==positionX) { mineHitX = true; }
+            if (minesArray[i+1]==positionY) { mineHitY = true; }
+        }
+        if (mineHitX == true && mineHitY == true) { hitMine = true; }
+        System.out.println(mineHitX);
+        System.out.println(mineHitY);
+    }
+
+
     public static void main(String[] args) {
 
         Boolean hoverBoolean = false;
@@ -101,6 +121,7 @@ public class Droid {
                         advancedDroid.location();
                         System.out.println("Select X + Y coordinates separated by space:");
                         advancedDroid.move(user_input.nextInt(), user_input.nextInt());
+                        advancedDroid.mines();
                     } else {
                         System.out.println("You need to hover to move!");
                     }
