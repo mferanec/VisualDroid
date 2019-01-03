@@ -2,12 +2,14 @@ import java.util.Scanner;
 
 public class Droid {
 
-    static int battery;
+    int battery;
     static int commandNo;
     int positionX = 0;
     int positionY = 0;
-    static Boolean winCondition = false;
-    static Boolean hitMine = false;
+    static boolean winCondition = false;
+    static boolean hitMine = false;
+    boolean minesGenerated = false;
+    int[] minesArray = new int[12];
 
     public Droid(int batteryLevel) {
         battery = batteryLevel;
@@ -36,6 +38,8 @@ public class Droid {
             commandNo = 3;
         } else if (commandString.equals("recharge")){
             commandNo = 4;
+        } else {
+            commandNo = 5;
         }
     }
 
@@ -79,34 +83,47 @@ public class Droid {
     }
 
     public void mines() {
-        Boolean mineHitX = false;
-        Boolean mineHitY = false;
-        int[] minesArray = new int[] {1,1,2,2,3,3,4,4};
-    /*    for(int i = 0; i < minesArray.length; i++) {
+        boolean mineHitX = false;
+        boolean mineHitY = false;
+        boolean mineNearbyX = false;
+        boolean mineNearbyY = false;
+        int closeMinesCount =0;
+        for(int i = 0; i < minesArray.length && !minesGenerated; i++) {
             minesArray[i] = (int)(Math.random()*9)+1;
             System.out.print(minesArray[i]);
-        } */
+        }
+        minesGenerated = true;
         for (int i = 0; i < minesArray.length && (mineHitX == false || mineHitY == false); i+=2) {
             mineHitX = false;
             mineHitY = false;
             if (minesArray[i]==positionX) { mineHitX = true; }
             if (minesArray[i+1]==positionY) { mineHitY = true; }
+            if (Math.abs(minesArray[i]-positionX) <= 1 && Math.abs(minesArray[i+1]-positionY) <= 1) {
+                closeMinesCount = closeMinesCount +1;
+            }
         }
-        if (mineHitX == true && mineHitY == true) { hitMine = true; }
-        System.out.println(mineHitX);
-        System.out.println(mineHitY);
+
+        if (mineHitX == true && mineHitY == true) {
+            hitMine = true;
+        } else {
+            if (closeMinesCount == 1) {
+                System.out.println("There is "+closeMinesCount+" mine nearby.");
+            } else {
+                System.out.println("There are "+closeMinesCount+" mines nearby.");
+            }
+        }
     }
 
 
     public static void main(String[] args) {
 
-        Boolean hoverBoolean = false;
+        boolean hoverBoolean = false;
         Droid advancedDroid = new Droid(100);
         Scanner user_input = new Scanner(System.in);
 
         advancedDroid.startup();
 
-        while (battery > 0 && winCondition == false && hitMine == false) {
+        while (advancedDroid.battery > 0 && !winCondition && !hitMine) {
             advancedDroid.awaitingCommand();
             advancedDroid.command(user_input.next());
 
@@ -117,7 +134,7 @@ public class Droid {
                     hoverBoolean = true;
                     break;
                 case 2:
-                    if (hoverBoolean == true) {
+                    if (hoverBoolean) {
                         advancedDroid.location();
                         System.out.println("Select X + Y coordinates separated by space:");
                         advancedDroid.move(user_input.nextInt(), user_input.nextInt());
@@ -136,9 +153,11 @@ public class Droid {
                     } else {
                         System.out.println("You need to land to recharge.");
                     }
+                case 5:
+                    System.out.println("Invalid command, try again please.");
             }
         }
-        if (battery <= 0) {
+        if (advancedDroid.battery <= 0) {
             System.out.println("You ran out of battery!");
             System.out.println("GAME OVER");
         } else if (hitMine == true) {
