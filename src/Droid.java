@@ -3,11 +3,11 @@ import java.util.Scanner;
 public class Droid {
 
     int battery;
-    static int commandNo;
+    int commandNo;
     int positionX = 0;
     int positionY = 0;
-    static boolean winCondition = false;
-    static boolean hitMine = false;
+    boolean winCondition = false;
+    boolean hitMine = false;
     boolean minesGenerated = false;
     int[] minesArray = new int[12];
 
@@ -85,15 +85,13 @@ public class Droid {
     public void mines() {
         boolean mineHitX = false;
         boolean mineHitY = false;
-        boolean mineNearbyX = false;
-        boolean mineNearbyY = false;
         int closeMinesCount =0;
         for(int i = 0; i < minesArray.length && !minesGenerated; i++) {
             minesArray[i] = (int)(Math.random()*9)+1;
             System.out.print(minesArray[i]);
         }
         minesGenerated = true;
-        for (int i = 0; i < minesArray.length && (mineHitX == false || mineHitY == false); i+=2) {
+        for (int i = 0; i < minesArray.length && (!mineHitX || !mineHitY); i+=2) {
             mineHitX = false;
             mineHitY = false;
             if (minesArray[i]==positionX) { mineHitX = true; }
@@ -103,7 +101,7 @@ public class Droid {
             }
         }
 
-        if (mineHitX == true && mineHitY == true) {
+        if (mineHitX && mineHitY) {
             hitMine = true;
         } else {
             if (closeMinesCount == 1) {
@@ -123,11 +121,11 @@ public class Droid {
 
         advancedDroid.startup();
 
-        while (advancedDroid.battery > 0 && !winCondition && !hitMine) {
+        while (advancedDroid.battery > 0 && !advancedDroid.winCondition && !advancedDroid.hitMine) {
             advancedDroid.awaitingCommand();
             advancedDroid.command(user_input.next());
 
-            switch (commandNo) {
+            switch (advancedDroid.commandNo) {
                 case 1:
                     System.out.println("Please select hover height:");
                     advancedDroid.hover(user_input.nextInt());
@@ -148,7 +146,7 @@ public class Droid {
                     hoverBoolean = false;
                     break;
                 case 4:
-                    if (hoverBoolean == false) {
+                    if (!hoverBoolean) {
                         advancedDroid.recharge();
                     } else {
                         System.out.println("You need to land to recharge.");
@@ -160,7 +158,7 @@ public class Droid {
         if (advancedDroid.battery <= 0) {
             System.out.println("You ran out of battery!");
             System.out.println("GAME OVER");
-        } else if (hitMine == true) {
+        } else if (advancedDroid.hitMine) {
             System.out.println("You hit a mine!");
             System.out.println("GAME OVER");
         } else {
