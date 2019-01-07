@@ -25,7 +25,6 @@ class backImage extends JComponent {
     }
 }
 
-
 public class Main extends JFrame {
 
     public Main() throws IOException {
@@ -35,20 +34,20 @@ public class Main extends JFrame {
         this.setResizable(false);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        BufferedImage bf = ImageIO.read(new File("C:\\IntelliJ\\IdeaProjects\\Visual Droid\\src\\img\\Background.jpg"));
+        BufferedImage bf = ImageIO.read(new File("src/img/Background.jpg"));
         this.setContentPane(new backImage(bf));
 
 
-        JButton bUp = new JButton("Up", new ImageIcon("C:\\IntelliJ\\IdeaProjects\\Visual Droid\\src\\img\\bUp.jpg"));
+        JButton bUp = new JButton("Up", new ImageIcon("src/img/bUp.jpg"));
         bUp.setBounds(350, 700, 85, 30);
         this.add(bUp);
-        JButton bDown = new JButton("Down", new ImageIcon("C:\\IntelliJ\\IdeaProjects\\Visual Droid\\src\\img\\bDown.jpg"));
+        JButton bDown = new JButton("Down", new ImageIcon("src/img/bDown.jpg"));
         bDown.setBounds(350, 730, 85, 30);
         this.add(bDown);
-        JButton bLeft = new JButton("Left", new ImageIcon("C:\\IntelliJ\\IdeaProjects\\Visual Droid\\src\\img\\bLeft.jpg"));
-        bLeft.setBounds(275, 715, 85, 30);
+        JButton bLeft = new JButton("Left", new ImageIcon("src/img/bLeft.jpg"));
+        bLeft.setBounds(265, 715, 85, 30);
         this.add(bLeft);
-        JButton bRight = new JButton("Right", new ImageIcon("C:\\IntelliJ\\IdeaProjects\\Visual Droid\\src\\img\\bRight.jpg"));
+        JButton bRight = new JButton("Right", new ImageIcon("src/img/bRight.jpg"));
         bRight.setBounds(435, 715, 85, 30);
         this.add(bRight);
 
