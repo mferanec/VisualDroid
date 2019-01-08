@@ -5,6 +5,8 @@ import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 
 class backImage extends JComponent {
@@ -16,7 +18,6 @@ class backImage extends JComponent {
 
     }
 
-    //Overriding the paintComponent method
     @Override
     public void paintComponent(Graphics g) {
 
@@ -51,7 +52,28 @@ public class Main extends JFrame {
         bRight.setBounds(435, 715, 85, 30);
         this.add(bRight);
 
+        JLabel label1 = new JLabel("Test");
+        label1.setBounds(10, 110, 200, 100);
+        this.add(label1);
+
+        bUp.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent arg0) {
+                label1.setText("Testing");
+            }
+        });
+
+        bDown.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent arg0) {
+                label1.setText("Testing2");
+            }
+        });
+
+
+
     }
+
 
 
 
