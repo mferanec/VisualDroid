@@ -8,7 +8,7 @@ public class Main implements  ActionListener{
     int batteryLevel = 70;
     int hoverHeight = 0;
     boolean hoverStatus = false;
-    int droidPositionXDefault = 0;
+    int droidPositionXDefault = 50;
     int droidPositionYDefault = 500;
     int droidPositionX = droidPositionXDefault;
     int droidPositionY = droidPositionYDefault;
@@ -16,8 +16,11 @@ public class Main implements  ActionListener{
     boolean hitMine = false;
 
     JPanel titlePanel, buttonPanelA, buttonPanelB, gamePanel;
-    JLabel batteryLabel, hoverLabel, hoverHeightLabel, batteryLabelValue, hoverStatusValue, getHoverHeightLabelValue, droidLabel;
+    JLabel batteryLabel, hoverLabel, hoverHeightLabel, batteryLabelValue, hoverLabelValue, droidLabel, droidLabel1, landscapeLabel;
     JButton bRecharge, bHover, resetButton, leftButton, rightButton, upButton, downButton;
+
+    ImageIcon droidImageGrounded = new ImageIcon("X:\\VisualDroid\\new\\VisualDroid\\src\\img\\droidGrounded.gif");
+    ImageIcon droidImageHover = new ImageIcon("X:\\VisualDroid\\new\\VisualDroid\\src\\img\\droidHover.gif");
 
     public JPanel createContentPane (){
 
@@ -26,6 +29,7 @@ public class Main implements  ActionListener{
         totalGUI.setLayout(null);
 
         // TitlePanel
+
         titlePanel = new JPanel();
         titlePanel.setLayout(null);
         titlePanel.setLocation(150, 10);
@@ -39,35 +43,35 @@ public class Main implements  ActionListener{
         batteryLabel.setHorizontalAlignment(0);
         titlePanel.add(batteryLabel);
 
-        hoverLabel = new JLabel("Hover Status");
-        hoverLabel.setLocation(130, 0);
-        hoverLabel.setSize(120, 30);
-        hoverLabel.setHorizontalAlignment(0);
-        titlePanel.add(hoverLabel);
-
-        hoverHeightLabel = new JLabel("Hover Height");
-        hoverHeightLabel.setLocation(260, 0);
-        hoverHeightLabel.setSize(120, 30);
-        hoverHeightLabel.setHorizontalAlignment(0);
-        titlePanel.add(hoverHeightLabel);
-
         batteryLabelValue = new JLabel(""+batteryLevel);
         batteryLabelValue.setLocation(0, 0);
         batteryLabelValue.setSize(120, 70);
         batteryLabelValue.setHorizontalAlignment(0);
         titlePanel.add(batteryLabelValue);
 
-        hoverStatusValue = new JLabel(""+hoverStatus);
-        hoverStatusValue.setLocation(130, 0);
-        hoverStatusValue.setSize(120, 70);
-        hoverStatusValue.setHorizontalAlignment(0);
-        titlePanel.add(hoverStatusValue);
+        hoverLabel = new JLabel("Hover Status");
+        hoverLabel.setLocation(130, 0);
+        hoverLabel.setSize(120, 30);
+        hoverLabel.setHorizontalAlignment(0);
+        titlePanel.add(hoverLabel);
 
-        getHoverHeightLabelValue = new JLabel(""+hoverHeight);
-        getHoverHeightLabelValue.setLocation(260, 0);
-        getHoverHeightLabelValue.setSize(120, 70);
-        getHoverHeightLabelValue.setHorizontalAlignment(0);
-        titlePanel.add(getHoverHeightLabelValue);
+        hoverLabelValue = new JLabel(""+hoverStatus);
+        hoverLabelValue.setLocation(130, 0);
+        hoverLabelValue.setSize(120, 70);
+        hoverLabelValue.setHorizontalAlignment(0);
+        titlePanel.add(hoverLabelValue);
+
+//        hoverHeightLabel = new JLabel("Hover Height");
+////        hoverHeightLabel.setLocation(260, 0);
+////        hoverHeightLabel.setSize(120, 30);
+////        hoverHeightLabel.setHorizontalAlignment(0);
+////        titlePanel.add(hoverHeightLabel);
+
+//        getHoverHeightLabelValue = new JLabel(""+hoverHeight);
+//        getHoverHeightLabelValue.setLocation(260, 0);
+//        getHoverHeightLabelValue.setSize(120, 70);
+//        getHoverHeightLabelValue.setHorizontalAlignment(0);
+//        titlePanel.add(getHoverHeightLabelValue);
 
         // ButtonPanelA
         buttonPanelA = new JPanel();
@@ -127,46 +131,53 @@ public class Main implements  ActionListener{
 
         gamePanel = new JPanel();
         gamePanel.setLayout(null);
-        gamePanel.setLocation(85, 80);
-        gamePanel.setSize(550, 550);
+        gamePanel.setLocation(0, 0);
+        gamePanel.setSize(750, 600);
         gamePanel.setBorder(BorderFactory.createLineBorder(Color.black));
         totalGUI.add(gamePanel);
 
-        ImageIcon droidImage = new ImageIcon("X:\\VisualDroid\\new\\VisualDroid\\src\\img\\Droid.gif");
         droidLabel = new JLabel("Droid");
         droidLabel.setLocation(droidPositionX, droidPositionY);
         droidLabel.setSize(50, 50);
         droidLabel.createImage(50,50);
-        droidLabel.setIcon(droidImage);
+        droidLabel.setIcon(droidImageGrounded);
         gamePanel.add(droidLabel);
+
+        ImageIcon landscapeImage = new ImageIcon("X:\\VisualDroid\\new\\VisualDroid\\src\\img\\landscape.jpg");
+        landscapeLabel = new JLabel("Landscape");
+        landscapeLabel.setLocation(0, 80);
+        landscapeLabel.setSize(750, 600);
+        landscapeLabel.createImage(750,600);
+        landscapeLabel.setIcon(landscapeImage);
+        gamePanel.add(landscapeLabel);
 
         totalGUI.setOpaque(true);
         return totalGUI;
     }
 
-    // This is the new ActionPerformed Method.
-    // It catches any events with an ActionListener attached.
-    // Using an if statement, we can determine which button was pressed
-    // and change the appropriate values in our GUI.
-    public void actionHover() {
-        hoverStatus = !hoverStatus;
-        hoverStatusValue.setText(""+hoverStatus);
-    }
+
+    // This is the new ActionPerformed Method. It catches any events with an ActionListener attached.
+    // Using an if statement, we can determine which button was pressed and change the appropriate values in our GUI.
 
     public void actionPerformed(ActionEvent e) {
-        Commands method = new Commands();
         if(e.getSource() == bRecharge) {
             batteryLevel = 100;
             batteryLabelValue.setText(""+batteryLevel);
         }
         else if(e.getSource() == bHover) {
-            method.actionHover();
+            hoverStatus = !hoverStatus;
+            hoverLabelValue.setText(""+hoverStatus);
+            if (hoverStatus) {
+                droidLabel.setIcon(droidImageHover);
+            } else {
+                droidLabel.setIcon(droidImageGrounded);
+            }
         }
         else if(e.getSource() == resetButton)        {
             batteryLevel = 50;
             batteryLabelValue.setText(""+batteryLevel);
             hoverStatus = false;
-            hoverStatusValue.setText(""+hoverStatus);
+            hoverLabelValue.setText(""+hoverStatus);
             droidPositionX = droidPositionXDefault;
             droidPositionY = droidPositionYDefault;
             droidLabel.setLocation(droidPositionX, droidPositionY);
@@ -198,32 +209,35 @@ public class Main implements  ActionListener{
     }
 
     private void createAndShowGUI() {
+            JFrame.setDefaultLookAndFeelDecorated(false);
+            JFrame frame = new JFrame("Visual Droid");
 
-        JFrame.setDefaultLookAndFeelDecorated(false);
-        JFrame frame = new JFrame("Visual Droid");
+            //Create and set up the content pane.
+            Main demo = new Main();
+            frame.setContentPane(demo.createContentPane());
 
-        //Create and set up the content pane.
-        Main demo = new Main();
-        frame.setContentPane(demo.createContentPane());
-
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(750, 800);
-        frame.setVisible(true);
+            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            frame.setSize(750, 800);
+            frame.setVisible(true);
     }
 
     public static void main(String[] args) {
         //Schedule a job for the event-dispatching thread:
         //creating and showing this application's GUI.
         Main visualDroid = new Main();
-//        while (visualDroid.batteryLevel > 0 && !visualDroid.winCondition && !visualDroid.hitMine) {
-//
-//        }
+  //      while (visualDroid.batteryLevel > 0 && !visualDroid.winCondition && !visualDroid.hitMine) {
+            SwingUtilities.invokeLater(new Runnable() {
+                public void run() {
+                    visualDroid.createAndShowGUI();
 
-        SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                visualDroid.createAndShowGUI();
-            }
-        });
+                }
+
+            });
+    //        visualDroid.hoverStatusValue.setText("test");
+
+
+
+
 
     }
 }
