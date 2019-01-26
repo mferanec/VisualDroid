@@ -1,12 +1,17 @@
 import javax.swing.*;
 import java.awt.Color;
+import java.awt.Image;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.net.MalformedURLException;
+import java.net.URL;
+import javax.imageio.ImageIO;
+import java.io.IOException;
 
 public class Main implements  ActionListener{
 
     int batteryLevel = 70;
-    int hoverHeight = 0;
+    String statusValue = "";
     boolean hoverStatus = false;
     int droidPositionXDefault = 50;
     int droidPositionYDefault = 500;
@@ -16,20 +21,23 @@ public class Main implements  ActionListener{
     boolean hitMine = false;
 
     JPanel titlePanel, buttonPanelA, buttonPanelB, gamePanel;
-    JLabel batteryLabel, hoverLabel, hoverHeightLabel, batteryLabelValue, hoverLabelValue, droidLabel, droidLabel1, landscapeLabel;
+    JLabel batteryLabel, batteryLabelValue, hoverLabel, hoverLabelValue, statusLabel, statusLabelValue, droidLabel, landscapeLabel;
     JButton bRecharge, bHover, resetButton, leftButton, rightButton, upButton, downButton;
+    ImageIcon droidImageGrounded = null;
+    ImageIcon droidImageHover = null;
 
-    ImageIcon droidImageGrounded = new ImageIcon("X:\\VisualDroid\\new\\VisualDroid\\src\\img\\droidGrounded.gif");
-    ImageIcon droidImageHover = new ImageIcon("X:\\VisualDroid\\new\\VisualDroid\\src\\img\\droidHover.gif");
+//    ImageIcon droidImageGrounded = new ImageIcon("X:\\VisualDroid\\new\\VisualDroid\\src\\img\\droidGrounded.gif");
+//    ImageIcon droidImageHover = new ImageIcon("X:\\VisualDroid\\new\\VisualDroid\\src\\img\\droidHover.gif");
+//    Image droidImageGrounded = null;
+//    Image droidImageHover = null;
 
-    public JPanel createContentPane (){
+    public JPanel createContentPane () {
 
         // Master JPanel for GUI
         JPanel totalGUI = new JPanel();
         totalGUI.setLayout(null);
 
         // TitlePanel
-
         titlePanel = new JPanel();
         titlePanel.setLayout(null);
         titlePanel.setLocation(150, 10);
@@ -43,7 +51,7 @@ public class Main implements  ActionListener{
         batteryLabel.setHorizontalAlignment(0);
         titlePanel.add(batteryLabel);
 
-        batteryLabelValue = new JLabel(""+batteryLevel);
+        batteryLabelValue = new JLabel("" + batteryLevel);
         batteryLabelValue.setLocation(0, 0);
         batteryLabelValue.setSize(120, 70);
         batteryLabelValue.setHorizontalAlignment(0);
@@ -55,23 +63,23 @@ public class Main implements  ActionListener{
         hoverLabel.setHorizontalAlignment(0);
         titlePanel.add(hoverLabel);
 
-        hoverLabelValue = new JLabel(""+hoverStatus);
+        hoverLabelValue = new JLabel("" + hoverStatus);
         hoverLabelValue.setLocation(130, 0);
         hoverLabelValue.setSize(120, 70);
         hoverLabelValue.setHorizontalAlignment(0);
         titlePanel.add(hoverLabelValue);
 
-//        hoverHeightLabel = new JLabel("Hover Height");
-////        hoverHeightLabel.setLocation(260, 0);
-////        hoverHeightLabel.setSize(120, 30);
-////        hoverHeightLabel.setHorizontalAlignment(0);
-////        titlePanel.add(hoverHeightLabel);
+        statusLabel = new JLabel("Status");
+        statusLabel.setLocation(260, 0);
+        statusLabel.setSize(120, 30);
+        statusLabel.setHorizontalAlignment(0);
+        titlePanel.add(statusLabel);
 
-//        getHoverHeightLabelValue = new JLabel(""+hoverHeight);
-//        getHoverHeightLabelValue.setLocation(260, 0);
-//        getHoverHeightLabelValue.setSize(120, 70);
-//        getHoverHeightLabelValue.setHorizontalAlignment(0);
-//        titlePanel.add(getHoverHeightLabelValue);
+        statusLabelValue = new JLabel("" + statusValue);
+        statusLabelValue.setLocation(260, 0);
+        statusLabelValue.setSize(120, 70);
+        statusLabelValue.setHorizontalAlignment(0);
+        titlePanel.add(statusLabelValue);
 
         // ButtonPanelA
         buttonPanelA = new JPanel();
@@ -129,6 +137,7 @@ public class Main implements  ActionListener{
         rightButton.addActionListener(this);
         buttonPanelB.add(rightButton);
 
+        // Game panel
         gamePanel = new JPanel();
         gamePanel.setLayout(null);
         gamePanel.setLocation(0, 0);
@@ -136,30 +145,46 @@ public class Main implements  ActionListener{
         gamePanel.setBorder(BorderFactory.createLineBorder(Color.black));
         totalGUI.add(gamePanel);
 
-        droidLabel = new JLabel("Droid");
+        Image landscapeImage = null;
+        URL droidGroundedImageURL = null;
+        URL droidHoverImageURL = null;
+
+        try {
+            URL landscapeImageURL = new URL("http://www.mfphoto.co.uk/VisualDroid/img/landscape2.jpg");
+            landscapeImage = ImageIO.read(landscapeImageURL);
+            droidHoverImageURL = new URL("http://www.mfphoto.co.uk/VisualDroid/img/droidHover.gif");
+            droidImageHover = new ImageIcon(droidHoverImageURL);
+            droidGroundedImageURL = new URL("http://www.mfphoto.co.uk/VisualDroid/img/droidGrounded.gif");
+            droidImageGrounded = new ImageIcon(droidGroundedImageURL);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        droidLabel = new JLabel(new ImageIcon(droidGroundedImageURL));
+        droidLabel = new JLabel(new ImageIcon(droidHoverImageURL));
         droidLabel.setLocation(droidPositionX, droidPositionY);
         droidLabel.setSize(50, 50);
-        droidLabel.createImage(50,50);
+        droidLabel.createImage(50, 50);
         droidLabel.setIcon(droidImageGrounded);
         gamePanel.add(droidLabel);
 
-        ImageIcon landscapeImage = new ImageIcon("X:\\VisualDroid\\new\\VisualDroid\\src\\img\\landscape.jpg");
-        landscapeLabel = new JLabel("Landscape");
+        landscapeLabel = new JLabel(new ImageIcon(landscapeImage));
         landscapeLabel.setLocation(0, 80);
         landscapeLabel.setSize(750, 600);
-        landscapeLabel.createImage(750,600);
-        landscapeLabel.setIcon(landscapeImage);
+        landscapeLabel.createImage(750, 600);
         gamePanel.add(landscapeLabel);
 
         totalGUI.setOpaque(true);
         return totalGUI;
     }
 
-
     // This is the new ActionPerformed Method. It catches any events with an ActionListener attached.
     // Using an if statement, we can determine which button was pressed and change the appropriate values in our GUI.
 
     public void actionPerformed(ActionEvent e) {
+        Main gameArea = new Main();
+        statusLabelValue.setText("");
         if(e.getSource() == bRecharge) {
             batteryLevel = 100;
             batteryLabelValue.setText(""+batteryLevel);
@@ -171,7 +196,7 @@ public class Main implements  ActionListener{
                 droidLabel.setIcon(droidImageHover);
             } else {
                 droidLabel.setIcon(droidImageGrounded);
-            }
+                }
         }
         else if(e.getSource() == resetButton)        {
             batteryLevel = 50;
@@ -183,16 +208,24 @@ public class Main implements  ActionListener{
             droidLabel.setLocation(droidPositionX, droidPositionY);
         }
         else if(e.getSource() == upButton) {
-            droidPositionY = droidPositionY - 50;
-            droidLabel.setLocation(droidPositionX, droidPositionY);
-            batteryLevel = batteryLevel - 30;
-            batteryLabelValue.setText(""+batteryLevel);
+            if (droidPositionY < 350) {
+                statusLabelValue.setText("Can't move that way");
+            } else {
+                droidPositionY = droidPositionY - 50;
+                droidLabel.setLocation(droidPositionX, droidPositionY);
+                batteryLevel = batteryLevel - 30;
+                batteryLabelValue.setText("" + batteryLevel);
+            }
         }
         else if(e.getSource() == downButton) {
-            droidPositionY = droidPositionY + 50;
-            droidLabel.setLocation(droidPositionX, droidPositionY);
-            batteryLevel = batteryLevel - 30;
-            batteryLabelValue.setText(""+batteryLevel);
+            if (droidPositionY >= 500) {
+                statusLabelValue.setText("Can't move that way");
+            } else {
+                droidPositionY = droidPositionY + 50;
+                droidLabel.setLocation(droidPositionX, droidPositionY);
+                batteryLevel = batteryLevel - 30;
+                batteryLabelValue.setText("" + batteryLevel);
+            }
         }
         else if(e.getSource() == leftButton) {
             droidPositionX = droidPositionX - 50;
@@ -215,17 +248,16 @@ public class Main implements  ActionListener{
             //Create and set up the content pane.
             Main demo = new Main();
             frame.setContentPane(demo.createContentPane());
-
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             frame.setSize(750, 800);
             frame.setVisible(true);
+            frame.setResizable(false);
     }
 
     public static void main(String[] args) {
         //Schedule a job for the event-dispatching thread:
         //creating and showing this application's GUI.
         Main visualDroid = new Main();
-  //      while (visualDroid.batteryLevel > 0 && !visualDroid.winCondition && !visualDroid.hitMine) {
             SwingUtilities.invokeLater(new Runnable() {
                 public void run() {
                     visualDroid.createAndShowGUI();
@@ -233,11 +265,5 @@ public class Main implements  ActionListener{
                 }
 
             });
-    //        visualDroid.hoverStatusValue.setText("test");
-
-
-
-
-
     }
 }
