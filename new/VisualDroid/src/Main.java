@@ -26,11 +26,6 @@ public class Main implements  ActionListener{
     ImageIcon droidImageGrounded = null;
     ImageIcon droidImageHover = null;
 
-//    ImageIcon droidImageGrounded = new ImageIcon("X:\\VisualDroid\\new\\VisualDroid\\src\\img\\droidGrounded.gif");
-//    ImageIcon droidImageHover = new ImageIcon("X:\\VisualDroid\\new\\VisualDroid\\src\\img\\droidHover.gif");
-//    Image droidImageGrounded = null;
-//    Image droidImageHover = null;
-
     public JPanel createContentPane () {
 
         // Master JPanel for GUI
@@ -228,16 +223,24 @@ public class Main implements  ActionListener{
             }
         }
         else if(e.getSource() == leftButton) {
-            droidPositionX = droidPositionX - 50;
-            droidLabel.setLocation(droidPositionX, droidPositionY);
-            batteryLevel = batteryLevel - 30;
-            batteryLabelValue.setText(""+batteryLevel);
+            if (droidPositionX <= 50) {
+                statusLabelValue.setText("Can't move that way");
+            } else {
+                droidPositionX = droidPositionX - 50;
+                droidLabel.setLocation(droidPositionX, droidPositionY);
+                batteryLevel = batteryLevel - 30;
+                batteryLabelValue.setText("" + batteryLevel);
+            }
         }
         else if(e.getSource() == rightButton) {
-            droidPositionX = droidPositionX + 50;
-            droidLabel.setLocation(droidPositionX, droidPositionY);
-            batteryLevel = batteryLevel - 30;
-            batteryLabelValue.setText(""+batteryLevel);
+            if (droidPositionX >= 650) {
+                statusLabelValue.setText("Can't move that way");
+            } else {
+                droidPositionX = droidPositionX + 50;
+                droidLabel.setLocation(droidPositionX, droidPositionY);
+                batteryLevel = batteryLevel - 30;
+                batteryLabelValue.setText("" + batteryLevel);
+            }
         }
     }
 
