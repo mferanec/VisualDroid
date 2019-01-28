@@ -3,7 +3,6 @@ import java.awt.Color;
 import java.awt.Image;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import java.net.MalformedURLException;
 import java.net.URL;
 import javax.imageio.ImageIO;
 import java.io.IOException;
@@ -12,6 +11,7 @@ public class Main implements  ActionListener{
 
     int batteryLevel = 70;
     String statusValue = "";
+    String cannotMove = "Can't move that way";
     boolean hoverStatus = false;
     int droidPositionXDefault = 50;
     int droidPositionYDefault = 500;
@@ -86,7 +86,7 @@ public class Main implements  ActionListener{
         bRecharge = new JButton("Recharge battery");
         bRecharge.setLocation(0, 0);
         bRecharge.setSize(150, 30);
-        bRecharge.addActionListener(e -> actionPerformed(e));
+        bRecharge.addActionListener(this);
         buttonPanelA.add(bRecharge);
 
         bHover = new JButton("Hover ON/OFF");
@@ -178,7 +178,6 @@ public class Main implements  ActionListener{
     // Using an if statement, we can determine which button was pressed and change the appropriate values in our GUI.
 
     public void actionPerformed(ActionEvent e) {
-        Main gameArea = new Main();
         statusLabelValue.setText("");
         if(e.getSource() == bRecharge) {
             batteryLevel = 100;
@@ -204,7 +203,7 @@ public class Main implements  ActionListener{
         }
         else if(e.getSource() == upButton) {
             if (droidPositionY < 350) {
-                statusLabelValue.setText("Can't move that way");
+                statusLabelValue.setText(cannotMove);
             } else {
                 droidPositionY = droidPositionY - 50;
                 droidLabel.setLocation(droidPositionX, droidPositionY);
@@ -214,7 +213,7 @@ public class Main implements  ActionListener{
         }
         else if(e.getSource() == downButton) {
             if (droidPositionY >= 500) {
-                statusLabelValue.setText("Can't move that way");
+                statusLabelValue.setText(cannotMove);
             } else {
                 droidPositionY = droidPositionY + 50;
                 droidLabel.setLocation(droidPositionX, droidPositionY);
@@ -224,7 +223,7 @@ public class Main implements  ActionListener{
         }
         else if(e.getSource() == leftButton) {
             if (droidPositionX <= 50) {
-                statusLabelValue.setText("Can't move that way");
+                statusLabelValue.setText(cannotMove);
             } else {
                 droidPositionX = droidPositionX - 50;
                 droidLabel.setLocation(droidPositionX, droidPositionY);
@@ -234,7 +233,7 @@ public class Main implements  ActionListener{
         }
         else if(e.getSource() == rightButton) {
             if (droidPositionX >= 650) {
-                statusLabelValue.setText("Can't move that way");
+                statusLabelValue.setText(cannotMove);
             } else {
                 droidPositionX = droidPositionX + 50;
                 droidLabel.setLocation(droidPositionX, droidPositionY);
